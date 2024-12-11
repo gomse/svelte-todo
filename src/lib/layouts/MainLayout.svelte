@@ -9,9 +9,7 @@
   </nav>
 
   <main>
-    <div class="grid place-items-center">
-      <slot />
-    </div>
+    <slot />
   </main>
 </div>
 
