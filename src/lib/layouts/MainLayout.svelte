@@ -2,7 +2,7 @@
   import { Link } from 'svelte-routing';
 </script>
 
-<div class="layout">
+<div class="bg-primary-500 w-full h-dvh">
   <nav>
     <Link to="/">Home</Link>
     <Link to="/about">About</Link>
@@ -12,10 +12,3 @@
     <slot />
   </main>
 </div>
-
-<style lang="postcss">
-  .layout {
-    text-align: center;
-    margin: 10px;
-  }
-</style>

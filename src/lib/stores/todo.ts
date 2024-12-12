@@ -25,5 +25,6 @@ const _items: TodoItem[] = [
   { id: uuid(), boardId: _boards[0].id, title: '만나서 반갑습니다' }
 ];
 
-export const todoBoards = writable(_boards);
-export const todoItems = writable(_items);
+export const todoBoards = writable<TodoBoard[]>(_boards);
+export const todoItems = writable<TodoItem[]>(_items);
+export const todoEditingItemId = writable<TodoId | null>(null);
