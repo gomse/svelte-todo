@@ -3,6 +3,7 @@
 
   export let item: TodoItem;
 
+  let isDragging = false;
   let editedText = item.title;
   let inputElement: HTMLInputElement;
 
@@ -44,10 +45,29 @@
       }
     }
   }
+
+  function handleDragStart(e: DragEvent) {
+    isDragging = true;
+    if (!e.dataTransfer) return;
+    e.dataTransfer.setData('text/plain', item.id);
+    e.dataTransfer.effectAllowed = 'move';
+  }
+
+  function handleDragEnd() {
+    isDragging = false;
+  }
 </script>
 
 {#if item}
-<div class="w-full h-[40px]">
+<div
+  role="button"
+  tabindex="0"
+  class="w-full h-[40px]"
+  class:shadow={isDragging}
+  draggable={!isEditing}
+  on:dragstart={handleDragStart}
+  on:dragend={handleDragEnd}
+>
   {#if isEditing}
     <input
       bind:this={inputElement}

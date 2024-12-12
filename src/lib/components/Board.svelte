@@ -5,6 +5,8 @@
 
   export let board: TodoBoard | null = null;
 
+  let isDragOver = false;
+
   $: items = $todoItems.filter(item => item.boardId === board?.id);
 
   function addItem() {
@@ -18,10 +20,40 @@
 
     todoEditingItemId.set(id);
   }
+
+  function handleDragOver(e: DragEvent) {
+    e.preventDefault();
+    isDragOver = true;
+    if (!e.dataTransfer) return;
+    e.dataTransfer.dropEffect = 'move';
+  }
+
+  function handleDragLeave() {
+    isDragOver = false;
+  }
+
+  function handleDrop(e: DragEvent) {
+    e.preventDefault();
+    isDragOver = false;
+
+    if (!board || !e.dataTransfer) return;
+
+    const itemId = e.dataTransfer.getData('text/plain');
+
+    todoItems.update(todos => todos.map(todo => todo.id === itemId ? { ...todo, boardId: board.id } : todo));
+  }
 </script>
 
 {#if board}
-<div class="card">
+<div
+  role="region"
+  class="card"
+  class:border-2={isDragOver}
+  class:border-tertiary-500={isDragOver}
+  on:dragover={handleDragOver}
+  on:dragleave={handleDragLeave}
+  on:drop={handleDrop}
+>
   <header class="card-header flex justify-between items-center">
     <h2 class="font-bold">{board.title}</h2>
     <button
